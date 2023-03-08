@@ -10,7 +10,7 @@ if [ -z $1 ]; then
   echo "info : ex) ./zero-downtime-deploy.sh { 서비스이름 }"
 else
   service_name=$1
-  old_container_id=$(docker ps -f name=$service_name -q | tail -n1)
+  old_container_id=$(docker ps -f name=$service_name -aq | tail -n1)
   if [ -z $old_container_id ]; then
     echo "info : $1 서비스가 없습니다."
     exit 1
