@@ -143,9 +143,5 @@ func countRecords(db *sql.DB) (int, error) {
 }
 
 func webhookHandler(c echo.Context) error {
-	m := &Message{}
-	if err := c.Bind(m); err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
-	}
-	return c.JSON(http.StatusOK, m)
+	return c.HTML(http.StatusOK, fmt.Sprintf("Hello, Docker! -V6 (%s)\n", "web hook"))
 }
