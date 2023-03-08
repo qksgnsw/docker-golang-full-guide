@@ -50,8 +50,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-golang-guide:latest
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-golang-guide:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-golang-guide:${{ github.sha }}, ${{ secrets.DOCKERHUB_USERNAME }}/docker-golang-guide:latest
 ```
 
 1. Start Commit
