@@ -1,6 +1,8 @@
 # Docker Develop Guide (With. Golang)
 
-### CI/CD
+## CI/CD
+
+### GitHub Actions Setting
 
 1. Settings탭 > Secrets and variables > Actions 이동
 2. New Repository secret 
@@ -45,6 +47,23 @@ jobs:
 
 7. Start Commit
 8. main으로 푸시 할때마다 이미지 빌드 및 이미지 푸시
+
+### Zero-downtime Deploy Setting
+
+1. 서비스에 종속되어 있는 이름을 shell scrypt 인자로 사용
+```yml
+# docker-compose.yml
+services:
+  web:
+```
+```sh
+# zero-downtime-deploy.sh
+service_name=$1
+```
+2. 예
+```sh
+./zero-downtime-deploy web
+```
 
 ### Troubleshooting
 
