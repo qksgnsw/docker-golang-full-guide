@@ -1,0 +1,12 @@
+[
+  {
+    "id": "redeploy",
+    "execute-command": "/Users/banhun/go/src/github.com/qksgnsw/docker-golang-full-guide/zero-downtime-deploy.sh",
+    "command-working-directory": "/Users/banhun/go/src/github.com/qksgnsw/docker-golang-full-guide",
+    "response-message": "Redeploying API server."
+  },
+  {
+    "id": "ping",
+    "response-message": "Ping"
+  }
+]

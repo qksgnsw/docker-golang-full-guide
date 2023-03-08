@@ -40,10 +40,6 @@ func main() {
 		return sendHandler(db, c)
 	})
 
-	e.POST("/webhook", func(c echo.Context) error {
-		return webhookHandler(c)
-	})
-
 	httpPort := os.Getenv("HTTP_PORT")
 	if httpPort == "" {
 		httpPort = "80"
@@ -140,8 +136,4 @@ func countRecords(db *sql.DB) (int, error) {
 	}
 
 	return count, nil
-}
-
-func webhookHandler(c echo.Context) error {
-	return c.HTML(http.StatusOK, fmt.Sprintf("Hello, Docker! -V6 (%s)\n", "web hook"))
 }
