@@ -1,0 +1,80 @@
+x-app: &default-app
+  depends_on: 
+    - roach
+  build:
+    context: .
+  restart: unless-stopped
+  networks:
+    - mynet
+  expose:
+    - 80
+  environment:
+    - PGUSER=${PGUSER:-totoro}
+    - PGPASSWORD=${PGPASSWORD:?database password not set}
+    - PGHOST=${PGHOST:-db}
+    - PGPORT=${PGPORT:-26257}
+    - PGDATABASE=${PGDATABASE:-mydb}
+  healthcheck:
+    test: "${DOCKER_WEB_HEALTHCHECK_TEST:-curl localhost:80/ping}"
+    interval: "60s"
+    timeout: "3s"
+    start_period: "5s"
+    retries: 3
+  deploy:
+    restart_policy:
+      condition: on-failure
+
+services:
+  web:
+    <<: *default-app
+    # deploy:
+    #   mode: replicated
+    #   replicas: 10
+
+  roach:
+    image: cockroachdb/cockroach:latest-v20.1
+    container_name: roach
+    hostname: db
+    networks:
+      - mynet
+    ports:
+      - 26257:26257
+    volumes:
+      - roach:/cockroach/cockroach-data
+    command: start-single-node --insecure
+    
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/
+      - ./nginx/data/certbot/conf:/etc/letsencrypt
+      - ./nginx/data/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    container_name: nginx
+    environment:
+      - TZ=Asia/Seoul
+    restart: unless-stopped
+    depends_on:
+      - web
+    networks: 
+      mynet:
+        aliases: 
+          - nginx
+          
+  # certbot:
+  #   image: certbot/certbot
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./nginx/data/certbot/conf:/etc/letsencrypt
+  #     - ./nginx/data/certbot/www:/var/www/certbot
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  roach:
+
+networks:
+  mynet:
+    driver: bridge
