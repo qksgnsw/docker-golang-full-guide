@@ -4,6 +4,13 @@
 
 ### GitHub Actions Setting
 
+0. 아래의 명령으로 파일을 만들고 6.내용 넣어도 됨.
+
+```sh
+mkdir -p ./.github/workflows
+touch ./.github/workflows/main.yml
+```
+
 1. Settings탭 > Secrets and variables > Actions 이동
 2. New Repository secret 
 3. DOCKERHUB_USERNAME 생성
@@ -12,6 +19,7 @@
 6. 이하 내용 삽입(clockbox 부분은 이미지 네임 변경해야함)
 
 ```yml
+# ./.github/workflows/main.yml
 name: ci
 
 on:
@@ -43,10 +51,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-golang-guide:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-golang-guide:${{ github.sha }}
 ```
 
-7. Start Commit
-8. main으로 푸시 할때마다 이미지 빌드 및 이미지 푸시
+1. Start Commit
+2. main으로 푸시 할때마다 이미지 빌드 및 이미지 푸시
+
+> 주의할 점
+> - git허브 브라우저에서 설정 했을 경우 반드시 pull을 받아야 함.
 
 ### Zero-downtime Deploy Setting
 
