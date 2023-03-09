@@ -5,9 +5,9 @@ reload_nginx() {
 }
 
 service_name=web
-replicas=1
+replicas=3
 
-old_container_id=$(docker ps -f name=$service_name -q | tail -n1)
+old_container_id=$(docker ps -f name=$service_name -q | tail -n$replicas)
 if [ -z $old_container_id ]; then
   echo "info : $1 서비스가 없습니다."
   exit 1

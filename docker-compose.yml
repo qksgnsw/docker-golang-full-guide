@@ -26,9 +26,9 @@ x-app: &default-app
 services:
   web:
     <<: *default-app
-    # deploy:
-    #   mode: replicated
-    #   replicas: 3
+    deploy:
+      mode: replicated
+      replicas: 3
 
   roach:
     image: cockroachdb/cockroach:latest-v20.1
