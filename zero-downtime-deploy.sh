@@ -11,6 +11,8 @@ reload_nginx() {
 # else
 # service_name=$1
 service_name=web
+replicas=3
+
 old_container_id=$(docker ps -f name=$service_name -q | tail -n1)
 if [ -z $old_container_id ]; then
   echo "info : $1 서비스가 없습니다."
@@ -20,7 +22,7 @@ fi
 image_name=$(docker ps -f name=$service_name --format "{{.Image}}")
 docker pull $image_name
 # (nginx continues routing to the old container only)
-docker-compose up -d --no-deps --scale $service_name=2 --no-recreate $service_name
+docker-compose up -d --no-deps --scale $service_name=$(($replicas*2)) --no-recreate $service_name
 
 # wait for new container to be available
 # new_container_id=$(docker ps -f name=$service_name -q | head -n1)
@@ -34,7 +36,7 @@ reload_nginx
 docker stop $old_container_id
 docker rm $old_container_id
 
-docker-compose up -d --no-deps --scale $service_name=1 --no-recreate $service_name
+docker-compose up -d --no-deps --scale $service_name=$replicas --no-recreate $service_name
 
 # stop routing requests to the old container
 reload_nginx
