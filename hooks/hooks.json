@@ -9,7 +9,7 @@
       "match":
       {
         "type": "payload-hash-sha1",
-        "secret": "mysecret12a",
+        "secret": "mysecret",
         "parameter":
         {
           "source": "header",
