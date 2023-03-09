@@ -76,6 +76,8 @@ service_name=$1
 ./zero-downtime-deploy web
 ```
 
+### Github Webhooks Setting
+
 ### Troubleshooting
 
 1. WAS가 제대로 로딩이 되지 않을 때
