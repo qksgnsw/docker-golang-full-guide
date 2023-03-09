@@ -9,7 +9,7 @@
       "match":
       {
         "type": "payload-hash-sha1",
-        "secret": "mysecret",
+        "secret": "mysecret12a",
         "parameter":
         {
           "source": "header",
@@ -21,5 +21,9 @@
   {
     "id": "ping",
     "response-message": "Ping"
-  }
+  },
+  {
+    "id": "pong",
+    "response-message": "Pong"
+  },
 ]
