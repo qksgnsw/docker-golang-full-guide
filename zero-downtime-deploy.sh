@@ -5,7 +5,7 @@ reload_nginx() {
 }
 
 service_name=web
-replicas=3
+replicas=1
 
 old_container_id=$(docker ps -f name=$service_name -q | tail -n1)
 if [ -z $old_container_id ]; then
