@@ -87,19 +87,59 @@ apt install webhook
 [
   {
     "id": "redeploy",
-    "execute-command": "/path/zero-downtime-deploy.sh",
-    "command-working-directory": "/path/docker-golang-full-guide",
-    "response-message": "Redeploying API server."
+    "execute-command": "/path/myscript.sh",
+    "command-working-directory": "/path/to/path",
+    "response-message": "Redeploying API server.",
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "payload-hash-sha1",
+        "secret": "mysecret",
+        "parameter":
+        {
+          "source": "header",
+          "name": "X-Hub-Signature"
+        }
+      }
+    },
   },
   {
     "id": "ping",
     "response-message": "Ping"
-  }
+  },
+  {
+    "id": "pong",
+    "response-message": "Pong"
+  },
 ]
 ```
+
 4. 웹훅 서버 가동
+
 ```sh
-webhook -hooks /path/hooks.json -verbose
+webhook -hooks /path/hooks.json -verbose 
+```
+
+5. 또는, 서비스 등록
+```sh
+touch /etc/systemd/system/multi-user.target.wants/webhook.service
+```
+```
+[Unit]
+Description=Small server for creating HTTP endpoints (hooks)
+Documentation=https://github.com/adnanh/webhook/
+[Service]
+ExecStart=/usr/bin/webhook -hooks /path/hooks.json -verbose 
+[Install]
+WantedBy=multi-user.target
+```
+
+6. 서비스 시작, 활성화, 재시작
+```sh
+systemctl start webhook
+systemctl enable webhook
+systemctl restart webhook
 ```
 
 ### Github Webhooks Setting
