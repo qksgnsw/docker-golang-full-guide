@@ -1,7 +1,7 @@
 x-app: &default-app
   depends_on: 
     - roach
-  image: qksgns0416/docker-golang-guide
+  image: qksgns0416/docker-golang-guide:latest
   restart: unless-stopped
   networks:
     - mynet

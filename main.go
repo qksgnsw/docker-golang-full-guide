@@ -89,7 +89,7 @@ func rootHandler(db *sql.DB, c echo.Context) error {
 	if err != nil {
 		return c.HTML(http.StatusInternalServerError, err.Error())
 	}
-	return c.HTML(http.StatusOK, fmt.Sprintf("Hello, Docker! -v10-replicas test (%d)\n", r))
+	return c.HTML(http.StatusOK, fmt.Sprintf("Hello, Docker! -v10-replicas test2 (%d)\n", r))
 }
 
 func sendHandler(db *sql.DB, c echo.Context) error {
