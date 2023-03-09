@@ -4,12 +4,6 @@ reload_nginx() {
   docker exec nginx /usr/sbin/nginx -s reload
 }
 
-# if [ -z $1 ]; then
-#   echo "info : 서비스 이름을 입력하세요."
-#   echo "info : 서비스 이름은 docker-compose.yml에 있습니다."
-#   echo "info : ex) ./zero-downtime-deploy.sh { 서비스이름 }"
-# else
-# service_name=$1
 service_name=web
 replicas=3
 
@@ -18,10 +12,10 @@ if [ -z $old_container_id ]; then
   echo "info : $1 서비스가 없습니다."
   exit 1
 fi
-# bring a new container online, running new code
+
 image_name=$(docker ps -f name=$service_name --format "{{.Image}}")
 docker pull $image_name
-# (nginx continues routing to the old container only)
+
 docker-compose up -d --no-deps --scale $service_name=$(($replicas*2)) --no-recreate $service_name
 
 # wait for new container to be available
@@ -29,15 +23,13 @@ docker-compose up -d --no-deps --scale $service_name=$(($replicas*2)) --no-recre
 # new_container_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $new_container_id)
 # curl --silent --include --retry-connrefused --retry 30 --retry-delay 1 --fail http://$new_container_ip:3000/ || exit 1
 
-# start routing requests to the new container (as well as the old)
 reload_nginx
 
-# take the old container offline
 docker stop $old_container_id
 docker rm $old_container_id
 
 docker-compose up -d --no-deps --scale $service_name=$replicas --no-recreate $service_name
 
-# stop routing requests to the old container
 reload_nginx
-# fi
+
+echo y | docker container prune && echo y | docker image prune

@@ -8,11 +8,11 @@ x-app: &default-app
   expose:
     - 80
   environment:
-    - PGUSER=${PGUSER:-totoro}
+    - PGUSER=${PGUSER:?database user not set}
     - PGPASSWORD=${PGPASSWORD:?database password not set}
-    - PGHOST=${PGHOST:-db}
-    - PGPORT=${PGPORT:-26257}
-    - PGDATABASE=${PGDATABASE:-mydb}
+    - PGHOST=${PGHOST:?database host not set}
+    - PGPORT=${PGPORT:?database port not set}
+    - PGDATABASE=${PGDATABASE:?database dbbase not set}
   healthcheck:
     test: "${DOCKER_WEB_HEALTHCHECK_TEST:-curl localhost:80/ping}"
     interval: "60s"
@@ -26,18 +26,18 @@ x-app: &default-app
 services:
   web:
     <<: *default-app
-    # deploy:
-    #   mode: replicated
-    #   replicas: 10
+    deploy:
+      mode: replicated
+      replicas: 3
 
   roach:
     image: cockroachdb/cockroach:latest-v20.1
     container_name: roach
-    hostname: db
+    hostname: ${PGHOST}
     networks:
       - mynet
     ports:
-      - 26257:26257
+      - ${PGPORT}:${PGPORT}
     volumes:
       - roach:/cockroach/cockroach-data
     command: start-single-node --insecure
