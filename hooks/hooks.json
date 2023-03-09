@@ -1,0 +1,25 @@
+[
+  {
+    "id": "redeploy",
+    "execute-command": "/Users/banhun/go/src/github.com/qksgnsw/docker-golang-full-guide/hooks/zero-downtime-deploy.sh",
+    "command-working-directory": "/Users/banhun/go/src/github.com/qksgnsw/docker-golang-full-guide/hooks/",
+    "response-message": "Redeploying API server.",
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "payload-hash-sha1",
+        "secret": "mysecret",
+        "parameter":
+        {
+          "source": "header",
+          "name": "X-Hub-Signature"
+        }
+      }
+    },
+  },
+  {
+    "id": "ping",
+    "response-message": "Ping"
+  }
+]
