@@ -145,7 +145,8 @@ systemctl restart webhook
 ### Github Webhooks Setting
 
 1. Let me select individual events.
-2. Workflow runs 체크
+2. secret란에 Webhook Setting secret과 같은 문구 사용
+3. Workflow runs 체크
 
 ### Zero-downtime Deploy Setting
 

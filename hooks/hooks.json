@@ -16,7 +16,7 @@
           "name": "X-Hub-Signature"
         }
       }
-    },
+    }
   },
   {
     "id": "ping",
@@ -25,5 +25,5 @@
   {
     "id": "pong",
     "response-message": "Pong"
-  },
+  }
 ]
