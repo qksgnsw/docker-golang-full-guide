@@ -31,6 +31,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: docker-golang-guide
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build a docker container and
