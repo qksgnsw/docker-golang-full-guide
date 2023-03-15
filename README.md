@@ -2,9 +2,13 @@
 
 ## CI/CD
 
-### AWS CLI 설정
+### AWS 설정
 
-#### 1. aws-cli 설치 및 로그인
+#### 1. AWS ECR 세팅
+
+> 리포지토리 생성
+
+#### 2. aws-cli 설치 및 로그인
 
 ```sh
 apt install awscli -y # ubuntu의 경우
